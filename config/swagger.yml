@@ -1,0 +1,123 @@
+swagger: "2.0"
+info:
+  description: This is the swagger file that goes with our server code
+  version: "1.0.0"
+  title: Swagger REST Article
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+
+basePath: "/api"
+
+# Paths supported by the server application
+paths:
+  /people:
+    get:
+      operationId: "people.read"
+      tags:
+        - "People"
+      summary: "The people data structure supported by the server application"
+      description: "Read the list of people"
+      responses:
+        200:
+          description: "Successful read people list operation"
+          schema:
+            type: "array"
+            items:
+              properties:
+                fname:
+                  type: "string"
+                lname:
+                  type: "string"
+                timestamp:
+                  type: "string"
+
+  /v1/octo/report:
+    post:
+      operationId: report.process
+      tags:
+        - Report
+      summary: Processes an Octo sensor report.
+      description: Processes an Octo sensor report.
+      parameters:
+        - name: report
+          in: body
+          description: Report to process.
+          required: True
+          schema:
+            type: object
+            properties:
+              payload_raw:
+                type: string
+                description: Raw sensor payload.
+              hardware_serial:
+                type: string
+                description: Device ID (DevEUI).
+              metadata:
+                type: object
+                description: Message metadata.
+                properties:
+                  time:
+                    type: string
+                    description: Time at which the message was received.
+      responses:
+        201:
+          description: Successfully processed the sensor report.
+
+  /v1/sensors:
+    get:
+      operationId: sensors.get_all
+      tags:
+        - Sensors
+      summary: Get all available sensor devices.
+      description: Get all available sensor devices.
+      responses:
+        200:
+          description: Successfully fetched all devices.
+
+  /v1/sensors/{dev_id}:
+    get:
+      operationId: sensors.get_types
+      tags:
+        - Sensors
+      summary: Get all sensor types for this device.
+      description: Get all sensor types for this device.
+      parameters:
+        - name: dev_id
+          in: path
+          description: Device ID (DevEUI).
+          type: string
+          required: True
+      responses:
+        200:
+          description: Successfully fetched all sensor types for this device.
+          schema:
+            properties:
+              sensor_types:
+                type: array
+
+  /v1/sensors/{dev_id}/{sensor_type}:
+    get:
+      operationId: sensors.get_values
+      tags:
+        - Sensors
+      summary: Get all measurement values for this sensor type from this device.
+      description: Get all measurement values for this sensor type from this device.
+      parameters:
+        - name: dev_id
+          in: path
+          description: Device ID (DevEUI).
+          type: string
+          required: True
+        - name: sensor_type
+          in: path
+          type: string
+          description: Sensor type, can be any type available for this device.
+          required: True
+      responses:
+        200:
+          description: Successfully fetched all measurements for this sensors type.
+
+      
+            
