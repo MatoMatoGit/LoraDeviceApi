@@ -1,2 +1,2 @@
-# LoraUplinkApi
-LoRa uplink REST API implemented using Connexion(Flask) and Swagger.
+# LoraDevicekApi
+LoRa device REST API implemented using Connexion(Flask) and Swagger.
