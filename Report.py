@@ -5,20 +5,34 @@ import threading
 
 client = NATSClient("nats://127.0.0.1:4222")
 Channels = {'data': [], 'meta': [], 'url': []}
+Callbacks = []
 
 def SetOutputChannels(channels):
     Channels = channels
 
+def AddUrlCallback(callback):
+	Callbacks.add(callback)
+
+def RemoveUrlCallback(callback):
+	Callbacks.remove(callback)
 
 def Process(report):
 
     print(report)
-    print("Payload: {}".format(report.get("payload_raw", None)))
-    print("Serial: {}".format(report.get("hardware_serial", None)))
+	payload = report.get("payload_raw", None)
+	dev_id = report.get("hardware_serial", None)
+	url = report.get("downlink_serial", None)
     metadata = report.get("metadata", None)
-    data = json.dumps(report)
-    print("Time: {}".format(metadata.get("time", None)))
+	time = metadata.get("time", None)
 
+    data = json.dumps({"dev_id": dev_id, "time": time, "data": payload})
+
+    print("Payload: {}".format(payload))
+    print("Serial: {}".format(dev_id))
+    print("Time: {}".format(time))
+
+	for cb in Callbacks:
+		cb(url)
 
     client.connect()
 
@@ -27,10 +41,7 @@ def Process(report):
 
     for channel in Channels['meta']:
         client.publish(channel, payload=metadata)
-
-    for channel in Channels['url']:
-        client.publish(channel, payload=report.downlink_url)
-
+	
     client.close()
 
     return make_response("Sensor report successfully processed", 201)
