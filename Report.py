@@ -19,11 +19,11 @@ def RemoveUrlCallback(callback):
 def Process(report):
 
     print(report)
-	payload = report.get("payload_raw", None)
-	dev_id = report.get("hardware_serial", None)
-	url = report.get("downlink_serial", None)
+    payload = report.get("payload_raw", None)
+    dev_id = report.get("hardware_serial", None)
+    url = report.get("downlink_serial", None)
     metadata = report.get("metadata", None)
-	time = metadata.get("time", None)
+    time = metadata.get("time", None)
 
     data = json.dumps({"dev_id": dev_id, "time": time, "data": payload})
 
@@ -31,8 +31,8 @@ def Process(report):
     print("Serial: {}".format(dev_id))
     print("Time: {}".format(time))
 
-	for cb in Callbacks:
-		cb(url)
+    for cb in Callbacks:
+        cb(url)
 
     client.connect()
 
