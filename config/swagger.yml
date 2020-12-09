@@ -33,6 +33,30 @@ paths:
               hardware_serial:
                 type: string
                 description: Device ID (DevEUI).
+              downlink_url:
+                type: string
+                description: Link for downlink message
+              port:
+                type: number
+                description: LoRaWAN FPort
+              counter:
+                type: number
+                description: LoRaWAN frame counter
+              confirmed:
+                type: boolean
+                description: Confirmed message if true
+              is_retry:
+                type: boolean
+                description: Retried message if true
+              payload_fields:
+                type: object
+                description: Payloads fields - opt
+              app_id:
+                type: string
+                description: Application UID
+              dev_id:
+                type: string
+                description: Device UID
               metadata:
                 type: object
                 description: Message metadata.
@@ -40,6 +64,67 @@ paths:
                   time:
                     type: string
                     description: Time at which the message was received.
+                  frequency:
+                    type: number
+                    description: Frequency at which the message was sent
+                  modulation:
+                    type: string
+                    description: Modulation that was used - LORA or FSK
+                  data_rate:
+                    type: string
+                    description:  Data rate that was used - if LORA modulation
+                  bit_rate:
+                    type: number
+                    description: Bit rate that was used - if FSK modulation
+                  coding_rate:
+                    type: string
+                    description: Coding rate that was used
+                  longtitude:
+                    type: number
+                    description: Device longtitude
+                  latitude:
+                    type: number
+                    description: Device latitude
+                  altitude:
+                    type: number
+                    description: Device altitude
+                  gateways:
+                    type: array
+                    description: Receiving gateway information
+                    items:
+                      type: object
+                      properties:
+                        gtw_id:
+                          type: string
+                          description: Gateway EUI
+                        timestamp:
+                          type: number
+                          description: Timestamp when the gateway received the message
+                        time:
+                          type: string
+                          description: Time when the gateway received the message - opt
+                        channel:
+                          type: number
+                          description: Channel where the gateway received the message
+                        rssi:
+                          type: number
+                          description: Signal strength of the received message
+                        snr:
+                          type: number
+                          description: Signal to noise ratio of the received message
+                        rf_chain:
+                          type: number
+                          description: RF chain where the gateway received the message
+                        longtitude:
+                          type: number
+                          description: Device longtitude
+                        latitude:
+                          type: number
+                          description: Device latitude
+                        altitude:
+                          type: number
+                          description: Device altitude
+
       responses:
         201:
           description: Successfully processed the sensor report.
