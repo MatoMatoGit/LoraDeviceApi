@@ -1,9 +1,9 @@
 from flask import make_response, abort
-from pynats import NATSClient
+# from pynats import NATSClient
 import json
 import threading
 
-client = NATSClient("nats://127.0.0.1:4222")
+# client = NATSClient("nats://127.0.0.1:4222")
 Channels = {'data': [], 'meta': [], 'url': []}
 Callbacks = []
 
@@ -21,7 +21,7 @@ def Process(report):
     print(report)
     payload = report.get("payload_raw", None)
     dev_id = report.get("hardware_serial", None)
-    url = report.get("downlink_serial", None)
+    url = report.get("downlink_url", None)
     metadata = report.get("metadata", None)
     time = metadata.get("time", None)
 
@@ -34,14 +34,25 @@ def Process(report):
     for cb in Callbacks:
         cb(url)
 
-    client.connect()
+    try:
 
-    for channel in Channels['data']:
-        client.publish(channel, payload=data)
+        file_path = "./lora_uplink_" + str(time)
+        file = open(file_path, 'w')
 
-    for channel in Channels['meta']:
-        client.publish(channel, payload=metadata)
-	
-    client.close()
+        file.write(data)
+        file.close()
+    except:
+        print("Failed to create a file.")
+
+    #
+    # client.connect()
+    #
+    # for channel in Channels['data']:
+    #     client.publish(channel, payload=data)
+    #
+    # for channel in Channels['meta']:
+    #     client.publish(channel, payload=metadata)
+    #
+    # client.close()
 
     return make_response("Sensor report successfully processed", 201)
