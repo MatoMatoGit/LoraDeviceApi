@@ -25,11 +25,17 @@ def Process(report):
     metadata = report.get("metadata", None)
     time = metadata.get("time", None)
 
-    data = json.dumps({"dev_id": dev_id, "time": time, "data": payload})
+    gateway = metadata.get("gateways", None)[0]
+    rssi = gateway["rssi"]
+    snr = gateway["snr"]
+
+    data = json.dumps({"dev_id": dev_id, "rssi": rssi, "snr": snr, "time": time, "data": payload})
 
     print("Payload: {}".format(payload))
     print("Serial: {}".format(dev_id))
     print("Time: {}".format(time))
+    print("RSSI: {}".format(rssi))
+    print("SNR: {}".format(snr))
 
     for cb in Callbacks:
         cb(url)
