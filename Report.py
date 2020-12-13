@@ -1,11 +1,14 @@
 from flask import make_response, abort
-# from pynats import NATSClient
+from kafka import KafkaProducer
 import json
 import threading
+from Decode import Decoder
 
-# client = NATSClient("nats://127.0.0.1:4222")
+
 Channels = {'data': [], 'meta': [], 'url': []}
 Callbacks = []
+Producer = KafkaProducer()
+Decoder = Decoder()
 
 def SetOutputChannels(channels):
     Channels = channels
@@ -29,9 +32,13 @@ def Process(report):
     rssi = gateway["rssi"]
     snr = gateway["snr"]
 
+    print("Payload (raw): {}".format(payload))
+
+    payload = Decoder.Decode(payload)
+
     data = json.dumps({"dev_id": dev_id, "rssi": rssi, "snr": snr, "time": time, "data": payload})
 
-    print("Payload: {}".format(payload))
+    print("Payload (decoded): {}".format(payload))
     print("Serial: {}".format(dev_id))
     print("Time: {}".format(time))
     print("RSSI: {}".format(rssi))
@@ -39,6 +46,8 @@ def Process(report):
 
     for cb in Callbacks:
         cb(url)
+
+    Producer.send('test.topic', data.encode('utf-8'))
 
     try:
 
