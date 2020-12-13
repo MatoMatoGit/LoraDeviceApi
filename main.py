@@ -18,8 +18,8 @@ def home():
     """
     return render_template('home.html')
 
+
 # If we're running in stand alone mode, run the application
 if __name__ == '__main__':
-    Report.SetOutputChannels({'data': ['uplink.data'], 'meta': ['uplink.meta'],
-        'url': ['downlink.url']})
+    Report.SetOutputChannels({'raw': ['uplink.raw'], 'data': ['uplink.data']})
     app.run(host='0.0.0.0', port=5000, debug=True)
