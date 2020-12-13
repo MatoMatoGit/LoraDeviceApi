@@ -19,13 +19,13 @@ def AddUrlCallback(callback):
 def RemoveUrlCallback(callback):
 	Callbacks.remove(callback)
 
-def Process(report):
+def Process(uplink_msg):
 
-    print(report)
-    payload = report.get("payload_raw", None)
-    dev_id = report.get("hardware_serial", None)
-    url = report.get("downlink_url", None)
-    metadata = report.get("metadata", None)
+    print(uplink_msg)
+    payload = uplink_msg.get("payload_raw", None)
+    dev_id = uplink_msg.get("hardware_serial", None)
+    url = uplink_msg.get("downlink_url", None)
+    metadata = uplink_msg.get("metadata", None)
     time = metadata.get("time", None)
 
     gateway = metadata.get("gateways", None)[0]
@@ -47,8 +47,6 @@ def Process(report):
     for cb in Callbacks:
         cb(url)
 
-    Producer.send('test.topic', data.encode('utf-8'))
-
     try:
 
         file_path = "./lora_uplink_" + str(time)
@@ -59,15 +57,10 @@ def Process(report):
     except:
         print("Failed to create a file.")
 
-    #
-    # client.connect()
-    #
-    # for channel in Channels['data']:
-    #     client.publish(channel, payload=data)
-    #
-    # for channel in Channels['meta']:
-    #     client.publish(channel, payload=metadata)
-    #
-    # client.close()
+    for channel in Channels['raw']:
+        Producer.send(channel, uplink_msg.encode('utf-8'))
 
-    return make_response("Sensor report successfully processed", 201)
+    for channel in Channels['data']:
+        Producer.send(channel, data.encode('utf-8'))
+
+    return make_response("Sensor uplink_msg successfully processed", 201)
