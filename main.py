@@ -1,6 +1,6 @@
 from flask import render_template
 import connexion
-import Report
+import UplinkTtn
 
 # Create the application instance
 app = connexion.App(__name__, specification_dir='./config')
@@ -21,5 +21,5 @@ def home():
 
 # If we're running in stand alone mode, run the application
 if __name__ == '__main__':
-    Report.SetOutputChannels({'raw': ['uplink.raw'], 'data': ['uplink.data']})
+    UplinkTtn.SetOutputChannels({'raw': ['uplink.raw'], 'data': ['uplink.data']})
     app.run(host='0.0.0.0', port=5000, debug=True)
