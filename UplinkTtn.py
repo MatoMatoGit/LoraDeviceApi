@@ -5,19 +5,24 @@ import threading
 from Decode import Decoder
 
 
-Channels = {'data': [], 'meta': [], 'url': []}
+Channels = {'raw': [], 'data': []}
 Callbacks = []
 Producer = KafkaProducer()
 Decoder = Decoder()
 
+
 def SetOutputChannels(channels):
+    global Channels
     Channels = channels
+
 
 def AddUrlCallback(callback):
 	Callbacks.add(callback)
 
+
 def RemoveUrlCallback(callback):
-	Callbacks.remove(callback)
+    Callbacks.remove(callback)
+
 
 def Process(uplink_msg):
 
@@ -58,9 +63,11 @@ def Process(uplink_msg):
         print("Failed to create a file.")
 
     for channel in Channels['raw']:
-        Producer.send(channel, uplink_msg.encode('utf-8'))
+        print("Sending raw on channel: {}".format(channel))
+        Producer.send(channel, str(uplink_msg).encode('utf-8'))
 
     for channel in Channels['data']:
+        print("Sending data on channel: {}".format(channel))
         Producer.send(channel, data.encode('utf-8'))
 
     return make_response("Sensor uplink_msg successfully processed", 201)

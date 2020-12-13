@@ -14,13 +14,13 @@ basePath: "/api"
 paths:
   /v1/devices/octo/report:
     post:
-      operationId: Report.Process
+      operationId: UplinkTtn.Process
       tags:
         - Report
       summary: Processes an Octo sensor report.
       description: Processes an Octo sensor report.
       parameters:
-        - name: report
+        - name: uplink_msg
           in: body
           description: Report to process.
           required: True
