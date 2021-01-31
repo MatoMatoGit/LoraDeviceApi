@@ -3,7 +3,8 @@ from flask import make_response, abort
 import json
 import threading
 from Decode import Decoder
-import datetime
+from datetime import date
+from datetime import time
 
 
 Channels = {'raw': [], 'data': []}
@@ -48,8 +49,6 @@ def Process(uplink_msg):
     #     cb(url)
     #
     try:
-        date = datetime.date
-        time = datetime.time
         timestamp = ("{}-{}-{}T{}:{}Z".format(date.year,
                                               date.month,
                                               date.day,
