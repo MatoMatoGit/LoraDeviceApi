@@ -7,21 +7,13 @@ from Decode import Decoder
 
 Channels = {'raw': [], 'data': []}
 Callbacks = []
-Producer = KafkaProducer()
+#Producer = KafkaProducer()
 Decoder = Decoder()
 
 
 def SetOutputChannels(channels):
     global Channels
     Channels = channels
-
-
-def AddUrlCallback(callback):
-	Callbacks.add(callback)
-
-
-def RemoveUrlCallback(callback):
-    Callbacks.remove(callback)
 
 
 def Process(uplink_msg):
@@ -64,10 +56,10 @@ def Process(uplink_msg):
 
     for channel in Channels['raw']:
         print("Sending raw on channel: {}".format(channel))
-        Producer.send(channel, str(uplink_msg).encode('utf-8'))
+        #Producer.send(channel, str(uplink_msg).encode('utf-8'))
 
     for channel in Channels['data']:
         print("Sending data on channel: {}".format(channel))
-        Producer.send(channel, data.encode('utf-8'))
+        #Producer.send(channel, data.encode('utf-8'))
 
     return make_response("Sensor uplink_msg successfully processed", 201)
