@@ -1,7 +1,14 @@
 from flask import render_template
 import connexion
 import UplinkTtn
-import UplinkKpn
+import sys
+
+try:
+    ca_file = sys.argv[1]
+    priv_key_file = sys.argv[2]
+    ssl_context = (ca_file, priv_key_file)
+except:
+    ssl_context = 'adhoc'
 
 # Create the application instance
 app = connexion.App(__name__, specification_dir='./config')
@@ -23,4 +30,4 @@ def home():
 # If we're running in stand alone mode, run the application
 if __name__ == '__main__':
     UplinkTtn.SetOutputChannels({'raw': ['uplink.raw'], 'data': ['uplink.data']})
-    app.run(host='0.0.0.0', port=443, debug=True , ssl_context='adhoc')
+    app.run(host='0.0.0.0', port=443, debug=True, ssl_context=ssl_context)
