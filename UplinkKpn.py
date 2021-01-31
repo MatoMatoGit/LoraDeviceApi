@@ -4,7 +4,7 @@ import json
 import threading
 from Decode import Decoder
 from datetime import date
-import datetime
+from datetime import datetime
 
 
 Channels = {'raw': [], 'data': []}
