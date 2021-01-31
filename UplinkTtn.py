@@ -1,5 +1,5 @@
 from flask import make_response, abort
-from kafka import KafkaProducer
+#from kafka import KafkaProducer
 import json
 import threading
 from Decode import Decoder
