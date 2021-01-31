@@ -1,5 +1,5 @@
 from flask import make_response, abort
-from kafka import KafkaProducer
+# from kafka import KafkaProducer
 import json
 import threading
 from Decode import Decoder
@@ -29,40 +29,32 @@ def Process(uplink_msg):
     # url = uplink_msg.get("downlink_url", None)
     # metadata = uplink_msg.get("metadata", None)
     time = metadata.get("bt", None)
-    print(time)
-    print(dev_id)
     print(payload_obj)
-    print(payload)
     print(port)
-    #
-    # gateway = metadata.get("gateways", None)[0]
-    # rssi = gateway["rssi"]
-    # snr = gateway["snr"]
-    #
-    # print("Payload (raw): {}".format(payload))
+
+    print("Payload (raw): {}".format(payload))
     #
     # payload = Decoder.Decode(payload)
     #
-    # data = json.dumps({"dev_id": dev_id, "rssi": rssi, "snr": snr, "time": time, "data": payload})
+    data = json.dumps({"dev_id": dev_id, "rssi": 0, "snr": 0, "time": time, "data": payload})
     #
     # print("Payload (decoded): {}".format(payload))
-    # print("Serial: {}".format(dev_id))
-    # print("Time: {}".format(time))
-    # print("RSSI: {}".format(rssi))
-    # print("SNR: {}".format(snr))
+    print("Serial: {}".format(dev_id))
+    print("Time: {}".format(time))
+
     #
     # for cb in Callbacks:
     #     cb(url)
     #
-    # try:
-    #
-    #     file_path = "./lora_uplink_" + str(time)
-    #     file = open(file_path, 'w')
-    #
-    #     file.write(data)
-    #     file.close()
-    # except:
-    #     print("Failed to create a file.")
+    try:
+
+        file_path = "./uplink_data/lora_uplink_" + str(time)
+        file = open(file_path, 'w')
+
+        file.write(data)
+        file.close()
+    except OSError:
+        print("Failed to create a file.")
     #
     # for channel in Channels['raw']:
     #     print("Sending raw on channel: {}".format(channel))
