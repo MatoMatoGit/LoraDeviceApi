@@ -3,6 +3,7 @@ from flask import make_response, abort
 import json
 import threading
 from Decode import Decoder
+import datetime
 
 
 Channels = {'raw': [], 'data': []}
@@ -47,8 +48,14 @@ def Process(uplink_msg):
     #     cb(url)
     #
     try:
-
-        file_path = "./uplink_data/lora_uplink_" + str(time)
+        date = datetime.date
+        time = datetime.time
+        timestamp = ("{}-{}-{}T{}:{}Z".format(date.year,
+                                              date.month,
+                                              date.day,
+                                              time.hour,
+                                              time.second))
+        file_path = "./uplink_data/lora_uplink_" + timestamp
         file = open(file_path, 'w')
 
         file.write(data)
