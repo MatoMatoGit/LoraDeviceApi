@@ -1,12 +1,13 @@
 from flask import render_template
 import connexion
 import UplinkTtn
+import UplinkKpn
 
 # Create the application instance
 app = connexion.App(__name__, specification_dir='./config')
 
-# Read the swagger.yml file to configure the endpoints
-app.add_api('swagger.yml')
+# Read the api.yml file to configure the endpoints
+app.add_api('api.yml')
 
 # Create a URL route in our application for "/"
 @app.route('/')
@@ -22,4 +23,4 @@ def home():
 # If we're running in stand alone mode, run the application
 if __name__ == '__main__':
     UplinkTtn.SetOutputChannels({'raw': ['uplink.raw'], 'data': ['uplink.data']})
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=443, debug=True , ssl_context='adhoc')
