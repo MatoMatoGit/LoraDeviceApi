@@ -12,6 +12,8 @@ Callbacks = []
 #Producer = KafkaProducer()
 Decoder = Decoder()
 
+NETWORK_KPN = "kpn"
+
 
 def SetOutputChannels(channels):
     global Channels
@@ -38,7 +40,7 @@ def Process(uplink_msg):
     #
     # payload = Decoder.Decode(payload)
     #
-    data = json.dumps({"dev_id": dev_id, "rssi": 0, "snr": 0, "time": time, "data": payload})
+    data = json.dumps({"network": NETWORK_KPN, "dev_id": dev_id, "rssi": 0, "snr": 0, "time": time, "data": payload})
     #
     # print("Payload (decoded): {}".format(payload))
     print("Serial: {}".format(dev_id))
