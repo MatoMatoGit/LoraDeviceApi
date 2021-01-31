@@ -46,7 +46,7 @@ def Process(uplink_msg):
 
     try:
 
-        file_path = "./lora_uplink_" + str(time)
+        file_path = "./uplink_data/lora_uplink_" + str(time)
         file = open(file_path, 'w')
 
         file.write(data)
