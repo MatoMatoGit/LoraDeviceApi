@@ -1,18 +1,21 @@
 swagger: "2.0"
 info:
-  description: This is the swagger file that goes with our server code
-  version: "1.0.0"
-  title: Swagger REST Article
+  description: The LoRa Device API provides end-points for TTN and KPN LoRa networks.
+  version: "0.1.0"
+  title: LoRa Device API
 consumes:
   - "application/json"
 produces:
   - "application/json"
+schemes:
+  - http
+  - https
 
-basePath: "/api"
+basePath: "/lora-device-api"
 
 # Paths supported by the server application
 paths:
-  /v1/devices/octo/report:
+  /v1/ttn/uplink:
     post:
       operationId: UplinkTtn.Process
       tags:
@@ -129,4 +132,22 @@ paths:
         201:
           description: Successfully processed the sensor report.
 
+  /v1/kpn/uplink:
+    post:
+      operationId: UplinkKpn.Process
+      tags:
+        - Report
+      summary: Processes an Octo sensor report.
+      description: Processes an Octo sensor report.
+      parameters:
+        - name: uplink_msg
+          in: body
+          description: Report to process.
+          required: True
+          schema:
+            type: array
+            items: {}
 
+      responses:
+        200:
+          description: Successfully processed the sensor report.
