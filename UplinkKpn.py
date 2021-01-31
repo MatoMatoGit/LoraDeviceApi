@@ -4,7 +4,7 @@ import json
 import threading
 from Decode import Decoder
 from datetime import date
-from datetime import time
+import datetime
 
 
 Channels = {'raw': [], 'data': []}
@@ -49,12 +49,8 @@ def Process(uplink_msg):
     #     cb(url)
     #
     try:
-        timestamp = ("{}-{}-{}T{}:{}Z".format(date.year,
-                                              date.month,
-                                              date.day,
-                                              time.hour,
-                                              time.second))
-        file_path = "./uplink_data/lora_uplink_" + timestamp
+
+
         file = open(file_path, 'w')
 
         file.write(data)
