@@ -52,11 +52,10 @@ def Process(uplink_msg):
 
         today = date.today()
         time = datetime.now().strftime("%H:%M:%S")
-        timestamp = ("{}-{}-{}T{}:{}Z".format(today.year,
-                                              today.month,
-                                              today.day,
-                                              time.hour,
-                                              time.second))
+        timestamp = ("{}-{}-{}T{}Z".format(today.year,
+                                           today.month,
+                                           today.day,
+                                           time))
         file_path = "./uplink_data/lora_uplink_" + timestamp
         file = open(file_path, 'w')
 
