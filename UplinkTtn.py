@@ -31,6 +31,8 @@ def Process(uplink_msg):
     rssi = gateway["rssi"]
     snr = gateway["snr"]
 
+    # TODO: Return 400 if message is missing fields.
+
     print("Payload (raw): {}".format(payload))
 
     payload = Decoder.Decode(payload)
@@ -55,6 +57,7 @@ def Process(uplink_msg):
         file.close()
     except:
         print("Failed to create a file.")
+        return make_response("Uplink message could not be stored", 500)
 
     for channel in Channels['raw']:
         print("Sending raw on channel: {}".format(channel))
@@ -64,4 +67,6 @@ def Process(uplink_msg):
         print("Sending data on channel: {}".format(channel))
         #Producer.send(channel, data.encode('utf-8'))
 
-    return make_response("Sensor uplink_msg successfully processed", 201)
+    # TODO: Return 500 if data cannot be processed.
+
+        return make_response("Uplink message successfully stored", 201)
