@@ -12,13 +12,14 @@ schemes:
   - https
 
 basePath: "/lora-device-api"
-#      tags:
-#        - Report
+
 # Paths supported by the server application
 paths:
   /v1/ttn/uplink:
     post:
       operationId: UplinkTtn.Process
+      tags:
+        - Uplink
       summary: Processes an Octo sensor report.
       description: Processes an Octo sensor report.
       parameters:
@@ -138,6 +139,8 @@ paths:
   /v1/kpn/uplink:
     post:
       operationId: UplinkKpn.Process
+      tags:
+        - Uplink
       summary: Processes an Octo sensor report.
       description: Processes an Octo sensor report.
       parameters:
