@@ -20,20 +20,20 @@ def SetOutputChannels(channels):
 
 def Process(uplink_msg):
 
-    print(uplink_msg)
-    payload = uplink_msg.get("payload_raw", None)
-    dev_id = uplink_msg.get("hardware_serial", None)
-    url = uplink_msg.get("downlink_url", None)
-    metadata = uplink_msg.get("metadata", None)
-    time = metadata.get("time", None)
+    try:
+        print(uplink_msg)
+        payload = uplink_msg.get("payload_raw", None)
+        dev_id = uplink_msg.get("hardware_serial", None)
+        url = uplink_msg.get("downlink_url", None)
+        metadata = uplink_msg.get("metadata", None)
+        time = metadata.get("time", None)
 
-    gateway = metadata.get("gateways", None)[0]
-    rssi = gateway["rssi"]
-    snr = gateway["snr"]
-
-    # TODO: Return 400 if message is missing fields.
-
-    print("Payload (raw): {}".format(payload))
+        gateway = metadata.get("gateways", None)[0]
+        rssi = gateway["rssi"]
+        snr = gateway["snr"]
+        print("Payload (raw): {}".format(payload))
+    except (KeyError, AttributeError):
+        return make_response("Uplink message is malformed.", 400)
 
     payload = Decoder.Decode(payload)
 

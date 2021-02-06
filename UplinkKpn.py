@@ -36,7 +36,7 @@ def Process(uplink_msg):
         time = metadata.get("bt", None)
         print(payload_obj)
         print(port)
-    except KeyError:
+    except (KeyError, AttributeError):
         return make_response("Uplink message is malformed.", 400)
 
     print("Payload (raw): {}".format(payload))
