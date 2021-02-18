@@ -1,21 +1,15 @@
 from flask import make_response, abort
-#from kafka import KafkaProducer
-import json
-import threading
 from Decode import Decoder
 
-
-Channels = {'raw': [], 'data': []}
-Callbacks = []
-#Producer = KafkaProducer()
 Decoder = Decoder()
+Uplink = None
 
 NETWORK_TTN = "ttn"
 
 
-def SetOutputChannels(channels):
-    global Channels
-    Channels = channels
+def SetUplink(uplink):
+    global Uplink
+    Uplink = uplink
 
 
 def Process(uplink_msg):
@@ -35,37 +29,26 @@ def Process(uplink_msg):
     except (KeyError, AttributeError):
         return make_response("Uplink message is malformed.", 400)
 
-    payload = Decoder.Decode(payload)
+    payload = Decoder.ParseCbor(Decoder.Base64ToAscii(payload))
 
-    data = json.dumps({"network": NETWORK_TTN, "dev_id": dev_id, "rssi": rssi, "snr": snr, "time": time, "data": payload})
-
-    print("Payload (decoded): {}".format(payload))
-    print("Serial: {}".format(dev_id))
-    print("Time: {}".format(time))
-    print("RSSI: {}".format(rssi))
     print("SNR: {}".format(snr))
 
-    for cb in Callbacks:
-        cb(url)
-
     try:
-
-        file_path = "./uplink_data/lora_uplink_" + str(time)
-        file = open(file_path, 'w')
-
-        file.write(data)
-        file.close()
-    except OSError:
+        Uplink.Send(raw=uplink_msg, network=NETWORK_TTN, dev_id=dev_id, rssi=rssi, payload=payload)
+    except:
         print("Failed to create a file.")
         return make_response("Uplink message could not be stored", 500)
 
-    for channel in Channels['raw']:
-        print("Sending raw on channel: {}".format(channel))
-        #Producer.send(channel, str(uplink_msg).encode('utf-8'))
-
-    for channel in Channels['data']:
-        print("Sending data on channel: {}".format(channel))
-        #Producer.send(channel, data.encode('utf-8'))
+    # try:
+    #
+    #     file_path = "./uplink_data/lora_uplink_" + str(time)
+    #     file = open(file_path, 'w')
+    #
+    #     file.write(data)
+    #     file.close()
+    # except OSError:
+    #     print("Failed to create a file.")
+    #     return make_response("Uplink message could not be stored", 500)
 
     # TODO: Return 500 if data cannot be processed.
 
