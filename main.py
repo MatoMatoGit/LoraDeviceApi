@@ -1,20 +1,31 @@
 from flask import render_template
 import connexion
-import UplinkTtn
+from Uplink import Uplink
+from Uplink import UplinkTtn
+from Uplink import UplinkKpn
 import sys
+import json
 
-try:
-    ca_file = sys.argv[1]
-    priv_key_file = sys.argv[2]
-    ssl_context = (ca_file, priv_key_file)
-except:
-    ssl_context = 'adhoc'
+cfg = open(sys.argv[1], 'r')
+
+Config = json.loads(cfg.read())
+
+cfg.close()
+
+if Config["ssl"] is True:
+    try:
+        ssl_context = (Config["ca_path"], Config["priv_key_path"])
+    except:
+        ssl_context = 'adhoc'
 
 # Create the application instance
-app = connexion.App(__name__, specification_dir='./config')
+app = connexion.App(__name__, specification_dir=Config["api_spec_dir"])
 
-# Read the api.yml file to configure the endpoints
-app.add_api('api.yml')
+# Add APIs
+for api in Config["apis"]:
+    print("Adding API: {}".format(api))
+    app.add_api(api)
+
 
 # Create a URL route in our application for "/"
 @app.route('/')
@@ -29,5 +40,7 @@ def home():
 
 # If we're running in stand alone mode, run the application
 if __name__ == '__main__':
-    UplinkTtn.SetOutputChannels({'raw': ['uplink.raw'], 'data': ['uplink.data']})
-    app.run(host='0.0.0.0', port=443, debug=True, ssl_context=ssl_context)
+    UplinkInstance = Uplink.Uplink({'raw': Config["channels"]["raw"], 'data': Config["channels"]["data"]})
+    UplinkTtn.SetUplink(UplinkInstance)
+    UplinkKpn.SetUplink(UplinkInstance)
+    app.run(host='0.0.0.0', port=8000, debug=True)#, ssl_context=ssl_context)

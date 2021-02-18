@@ -1,0 +1,18 @@
+{
+  "ssl": true,
+  "ca_path": "./ca.pem",
+  "priv_key_path": "/priv_key.pem",
+  "api_spec_dir": "./config",
+  "apis": [
+    "uplink_api.yml"
+  ],
+
+  "channels": {
+    "raw": [
+      "uplink.raw"
+    ],
+    "data": [
+      "uplink.data"
+    ]
+  }
+}
