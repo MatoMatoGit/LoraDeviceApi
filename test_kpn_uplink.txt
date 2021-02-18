@@ -1,4 +1,4 @@
-[{"bn":"urn:dev:DEVEUI:0000000000000000:","bt":1.58565075E9},{"n": "payload", "vs": "DEADBEEFCAFE"},{"n": "port", "v": 80}]
+[{"bn":"urn:dev:DEVEUI:0000000000001001:","bt":1.58565075E9},{"n": "payload", "vs": "a202a11864830f101101a30c010a010b00"},{"n": "port", "v": 80}]
 
 
 payload
@@ -6,4 +6,6 @@ vs The received payload in hexadecimal notation
 (example: 010203).
 port
 v The application port the data was received on.
+
+
 
