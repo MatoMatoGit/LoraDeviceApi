@@ -55,7 +55,7 @@ def Process(uplink_msg):
 
         file.write(data)
         file.close()
-    except:
+    except OSError:
         print("Failed to create a file.")
         return make_response("Uplink message could not be stored", 500)
 
@@ -69,4 +69,4 @@ def Process(uplink_msg):
 
     # TODO: Return 500 if data cannot be processed.
 
-        return make_response("Uplink message successfully stored", 201)
+    return make_response("Uplink message successfully stored", 201)
