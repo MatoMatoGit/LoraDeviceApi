@@ -12,7 +12,7 @@ Config = json.loads(cfg.read())
 
 cfg.close()
 
-if Config["ssl"] is True:
+if Config["tls"] is True:
     try:
         ssl_context = (Config["ca_path"], Config["priv_key_path"])
     except:
@@ -43,7 +43,7 @@ if __name__ == '__main__':
     UplinkInstance = Uplink.Uplink({'raw': Config["channels"]["raw"], 'data': Config["channels"]["data"]})
     UplinkTtn.SetUplink(UplinkInstance)
     UplinkKpn.SetUplink(UplinkInstance)
-    if Config["ssl"] is True:
+    if Config["tls"] is True:
         app.run(host='0.0.0.0', port=Config["port"], debug=True, ssl_context=ssl_context)
     else:
         app.run(host='0.0.0.0', port=Config["port"], debug=True)
