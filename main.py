@@ -43,4 +43,7 @@ if __name__ == '__main__':
     UplinkInstance = Uplink.Uplink({'raw': Config["channels"]["raw"], 'data': Config["channels"]["data"]})
     UplinkTtn.SetUplink(UplinkInstance)
     UplinkKpn.SetUplink(UplinkInstance)
-    app.run(host='0.0.0.0', port=8000, debug=True)#, ssl_context=ssl_context)
+    if Config["ssl"] is True:
+        app.run(host='0.0.0.0', port=Config["port"], debug=True, ssl_context=ssl_context)
+    else:
+        app.run(host='0.0.0.0', port=Config["port"], debug=True)

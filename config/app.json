@@ -1,5 +1,6 @@
 {
   "ssl": true,
+  "port": 443,
   "ca_path": "./ca.pem",
   "priv_key_path": "/priv_key.pem",
   "api_spec_dir": "./config",
