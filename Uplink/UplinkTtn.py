@@ -29,7 +29,9 @@ def Process(uplink_msg):
     except (KeyError, AttributeError):
         return make_response("Uplink message is malformed.", 400)
 
-    payload = Decoder.ParseCbor(Decoder.Base64ToAscii(payload))
+    payload = Decoder.Base64ToAscii(payload)
+    print("Payload (base64 decoded): {}".format(payload))
+    payload = Decoder.ParseCbor(payload)
 
     print("SNR: {}".format(snr))
 
