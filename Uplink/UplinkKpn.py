@@ -30,8 +30,7 @@ def Process(uplink_msg):
         return make_response("Uplink message is malformed.", 400)
 
     print("Payload (raw): {}".format(payload))
-    payload_b = bytearray()
-    payload_b.extend(map(ord, payload))
+    payload_b = bytes.fromhex(payload)
     print("Payload (hex): {}".format(payload_b))
     payload = Decoder.ParseCbor(payload_b)
 
