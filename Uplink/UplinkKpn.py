@@ -30,8 +30,10 @@ def Process(uplink_msg):
         return make_response("Uplink message is malformed.", 400)
 
     print("Payload (raw): {}".format(payload))
-    payload.encode('hex')
-    payload = Decoder.ParseCbor(bytes(payload, 'utf-8'))
+    payload_b = bytearray()
+    payload_b.extend(map(ord, payload))
+    print("Payload (hex): {}".format(payload_b))
+    payload = Decoder.ParseCbor(payload_b)
 
     try:
         Uplink.Send(raw=uplink_msg, network=NETWORK_KPN, dev_id=dev_id, rssi=0, payload=payload)
