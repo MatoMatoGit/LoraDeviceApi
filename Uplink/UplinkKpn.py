@@ -30,7 +30,7 @@ def Process(uplink_msg):
         return make_response("Uplink message is malformed.", 400)
 
     print("Payload (raw): {}".format(payload))
-
+    payload.encode('ascii')
     payload = Decoder.ParseCbor(bytes(payload, 'utf-8'))
 
     try:

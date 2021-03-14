@@ -15,8 +15,11 @@ cfg.close()
 if Config["tls"] is True:
     try:
         ssl_context = (Config["ca_path"], Config["priv_key_path"])
-    except:
+    except KeyError:
         ssl_context = 'adhoc'
+else:
+    ssl_context = None
+
 
 # Create the application instance
 app = connexion.App(__name__, specification_dir=Config["api_spec_dir"])
@@ -40,9 +43,11 @@ def home():
 
 # If we're running in stand alone mode, run the application
 if __name__ == '__main__':
-    UplinkInstance = Uplink.Uplink({'raw': Config["channels"]["raw"], 'data': Config["channels"]["data"]})
+    UplinkInstance = Uplink.Uplink({'raw': Config["channels"]["raw"],
+                                    'data': Config["channels"]["data"]})
     UplinkTtn.SetUplink(UplinkInstance)
     UplinkKpn.SetUplink(UplinkInstance)
+
     if Config["tls"] is True:
         app.run(host='0.0.0.0', port=Config["port"], debug=True, ssl_context=ssl_context)
     else:
