@@ -1,8 +1,8 @@
 swagger: "2.0"
 info:
-  description: The LoRa Device API provides end-points for TTN and KPN LoRa networks.
+  description: The LoRa Network Gateway API provides end-points for TTN and KPN LoRa networks.
   version: "0.2.0"
-  title: MatoMato LoRa Device Gateway API
+  title: MatoMato LoRa Network Gateway API
 consumes:
   - "application/json"
 produces:
@@ -11,7 +11,7 @@ schemes:
   - http
   - https
 
-basePath: "/lora-device-gtw"
+basePath: "/lora-network-gateway"
 
 # Paths supported by the server application
 paths:
