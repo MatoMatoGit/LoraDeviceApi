@@ -1,8 +1,8 @@
 swagger: "2.0"
 info:
   description: The LoRa Device API provides end-points for TTN and KPN LoRa networks.
-  version: "0.1.0"
-  title: MatoMato LoRa Device API
+  version: "0.2.0"
+  title: MatoMato LoRa Device Gateway API
 consumes:
   - "application/json"
 produces:
@@ -11,7 +11,7 @@ schemes:
   - http
   - https
 
-basePath: "/lora-device-api"
+basePath: "/lora-device-gtw"
 
 # Paths supported by the server application
 paths:
@@ -20,12 +20,12 @@ paths:
       operationId: Uplink.UplinkTtn.Process
       tags:
         - Uplink
-      summary: Processes an Octo sensor report.
-      description: Processes an Octo sensor report.
+      summary: Processes TTN uplink message.
+      description: Processes TTN uplink message.
       parameters:
         - name: uplink_msg
           in: body
-          description: Report to process.
+          description: Message to process.
           required: True
           schema:
             type: object
@@ -141,12 +141,12 @@ paths:
       operationId: Uplink.UplinkKpn.Process
       tags:
         - Uplink
-      summary: Processes an Octo sensor report.
-      description: Processes an Octo sensor report.
+      summary: Processes KPN uplink message.
+      description: Processes TTN uplink message.
       parameters:
         - name: uplink_msg
           in: body
-          description: Report to process.
+          description: Message to process.
           required: True
           schema:
             type: array
