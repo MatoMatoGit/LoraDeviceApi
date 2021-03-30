@@ -1,5 +1,6 @@
 [{"bn":"urn:dev:DEVEUI:0000000000001001:","bt":1.58565075E9},{"n": "payload", "vs": "a202a11864830f101101a30c010a010b00"},{"n": "port", "v": 80}]
 
+a202a3186618641867183018651401a30c6c3234366632386231636662380a010b01
 
 payload
 vs The received payload in hexadecimal notation 
