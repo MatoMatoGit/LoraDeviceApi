@@ -15,17 +15,21 @@ class Uplink:
         return
 
     def Send(self, raw, network, dev_id, rssi, payload):
-        time = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+        time = datetime.now().strftime("%Y-%m-%d|%H:%M:%S")
 
         print("Payload (decoded): {}".format(payload))
         print("Device: {}".format(dev_id))
         print("Time: {}".format(time))
         print("RSSI: {}".format(rssi))
 
-        data = json.dumps({"network": network,
-                           "dev_id": dev_id,
-                           "rssi": rssi,
-                           "time": time,
+        data = json.dumps({"meta": {
+                            "network": {
+                                "type": network,
+                                "dev_id": dev_id,
+                                "rssi": rssi,
+                                "rx_time": time
+                             },
+                            },
                            "data": payload
                            })
 
